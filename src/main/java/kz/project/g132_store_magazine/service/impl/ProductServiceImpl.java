@@ -1,5 +1,11 @@
 package kz.project.g132_store_magazine.service.impl;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import kz.project.g132_store_magazine.exeption.ProductNotFoundException;
 import kz.project.g132_store_magazine.model.Product;
 import kz.project.g132_store_magazine.repository.ProductRepository;
@@ -7,6 +13,7 @@ import kz.project.g132_store_magazine.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,10 +21,31 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final EntityManager entityManager;
 
     @Override
-    public List<Product> findAll(String name, double price, String description) {
-        return List.of();
+    public List<Product> findAll(String name, Double price, String description) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> query = cb.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if(name!=null && !name.isEmpty()){
+            predicates.add(cb.like(cb.lower(root.get("name")), "%" + name + "%"));
+        }
+
+        if(price!=null){
+            predicates.add(cb.equal(root.get("price"), price));
+        }
+
+        if(description!=null && !description.isEmpty()){
+            predicates.add(cb.like(cb.lower(root.get("description")), "%" + description + "%"));
+        }
+
+        query.select(root).where(cb.and(predicates.toArray(new Predicate[0])));
+
+        return entityManager.createQuery(query).getResultList();
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 public interface ProductService {
-    List<Product> findAll(String name, double price, String description);
+    List<Product> findAll(String name, Double price, String description);
 
     Product findById(int id);
 }
