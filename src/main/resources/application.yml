@@ -1,6 +1,8 @@
 spring:
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
   datasource:
-    url: "jdbc:postgresql://localhost:5432/g132store_magazine?currentSchema=store"
+    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=store"
     username: postgres
     password: postgres
   jpa:

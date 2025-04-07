@@ -26,8 +26,6 @@ public class Product {
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
-
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Country> countries;
 
@@ -36,8 +34,4 @@ public class Product {
         createdAt = LocalDateTime.now();
     }
 
-    @PreUpdate
-    public void update(){
-        updatedAt = LocalDateTime.now();
-    }
 }

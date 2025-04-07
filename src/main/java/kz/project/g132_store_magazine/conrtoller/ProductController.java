@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -50,7 +51,7 @@ public class ProductController {
         try {
             return ResponseEntity.ok(productService.findAll(name, price, description));
         } catch (ProductNotFoundException exception){
-            throw new ProductNotFoundException("Not Found Products!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
