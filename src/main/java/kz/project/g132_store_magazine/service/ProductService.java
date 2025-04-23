@@ -10,4 +10,6 @@ public interface ProductService {
     List<Product> findAll(String name, Double price, String description);
 
     Product findById(int id);
+
+    Product addProduct(Product product); //
 }

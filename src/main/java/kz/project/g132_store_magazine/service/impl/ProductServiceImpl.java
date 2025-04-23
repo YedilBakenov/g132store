@@ -52,4 +52,18 @@ public class ProductServiceImpl implements ProductService {
     public Product findById(int id) {
         return productRepository.findById(id).orElseThrow(()-> new ProductNotFoundException("Not Found Product By Id, Id: " + id + " not found!"));
     }
+
+    @Override
+    public Product addProduct(Product product) { // implementation of addProduct method
+        if (product != null) {
+            return productRepository.save(product);
+        }
+        // Handle the case when product is null
+        // You can throw an exception or return a default value
+        // For example, you can throw an exception:
+        // throw new IllegalArgumentException("Product cannot be null");
+        // Or return null:
+
+        return null;
+    }
 }
